@@ -1,101 +1,80 @@
 "use client";
 
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useActionState } from "react";
 
 import { OctagonAlert } from "lucide-react";
-
-import { useForm } from "react-hook-form";
-import { useActionState } from "react";
-import Form from "next/react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-  FieldLegend,
-  FieldSeparator,
-  FieldSet,
-} from "@/components/ui/field";
+import { Field, FieldLabel, FieldError } from "@/components/ui/field";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 
-const formSchema = z.object({
-  email: z.email(),
-  password: z.string().min(1, { message: "Password is required" }),
-});
+import { signIn, type SignInState } from "@/module/ui/actions/auth";
+
+const initialState: SignInState = {};
 
 export const SignInView = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
-
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log(data);
-  }
+  const [state, formAction, isPending] = useActionState(signIn, initialState);
 
   return (
-    <div className=" flex flex-col gap-6">
+    <div className="flex flex-col gap-6">
       <Card className="bg-muted overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form>paragraph 1</form>
-          <div>
-            <img src="/logo.svg" alt="logo" className="size-24" />
-            <Form action={action} className="space-y-6 max-w-md">
-              <Field>
-                <FieldLabel htmlFor="name">Name</FieldLabel>
-                <Input
-                  id="name"
-                  name="name"
-                  // Re-hydrate the input if validation fails
-                  defaultValue={state.inputs?.name as string}
-                  aria-invalid={!!state.errors?.name}
-                />
-                {state.errors?.name && (
-                  <FieldError>{state.errors.name[0]}</FieldError>
-                )}
-              </Field>
+          <form action={formAction} className="flex flex-col gap-6 p-6 md:p-8">
+            <div className="flex flex-col items-center text-center">
+              <h1 className="text-2xl font-bold">Welcome back</h1>
+              <p className="text-balance text-muted-foreground">
+                Sign in to your account
+              </p>
+            </div>
+            {state?.message && (
+              <Alert variant="destructive">
+                <OctagonAlert className="size-4" />
+                <AlertTitle>{state.message}</AlertTitle>
+              </Alert>
+            )}
 
-              <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  defaultValue={state.inputs?.email as string}
-                  aria-invalid={!!state.errors?.email}
-                />
-                {state.errors?.email && (
-                  <FieldError>{state.errors.email[0]}</FieldError>
-                )}
-              </Field>
+            <Field>
+              <FieldLabel htmlFor="email">Email</FieldLabel>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="you@example.com"
+                defaultValue={state?.inputs?.email}
+                aria-invalid={!!state?.errors?.email}
+              />
+              {state?.errors?.email && (
+                <FieldError>{state.errors.email[0]}</FieldError>
+              )}
+            </Field>
 
-              <Field>
-                <FieldLabel htmlFor="password">Password</FieldLabel>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  defaultValue={state.inputs?.password as string}
-                  aria-invalid={!!state.errors?.password}
-                />
-                {state.errors?.password && (
-                  <FieldError>{state.errors.password[0]}</FieldError>
-                )}
-              </Field>
+            <Field>
+              <FieldLabel htmlFor="password">Password</FieldLabel>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="••••••••"
+                aria-invalid={!!state?.errors?.password}
+              />
+              {state?.errors?.password && (
+                <FieldError>{state.errors.password[0]}</FieldError>
+              )}
+            </Field>
 
-              {/* isPending automatically tracks the Server Action's network request */}
-              <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending ? "Signing up..." : "Sign Up"}
-              </Button>
-            </Form>
+            <Button type="submit" className="w-full" disabled={isPending}>
+              {isPending ? "Signing in..." : "Sign In"}
+            </Button>
+          </form>
+
+          <div className="relative hidden bg-muted md:block">
+            <img
+              src="/logo.svg"
+              alt="logo"
+              className="absolute inset-0 size-full object-contain p-8 dark:brightness-[0.2] dark:grayscale"
+            />
           </div>
         </CardContent>
       </Card>
