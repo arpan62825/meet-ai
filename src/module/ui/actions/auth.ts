@@ -18,6 +18,8 @@ export type SignInState = {
   message?: string;
   inputs?: {
     email?: string;
+    password?: string;
+    userName?: string;
   };
 };
 
@@ -25,12 +27,10 @@ export async function signIn(
   prevState: SignInState,
   formData: FormData,
 ): Promise<SignInState> {
-
   const rawData = {
     email: formData.get("email") as string,
     password: formData.get("password") as string,
   };
-
 
   const validated = signInSchema.safeParse(rawData);
 

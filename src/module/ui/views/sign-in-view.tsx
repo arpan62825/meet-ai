@@ -11,6 +11,7 @@ import { Field, FieldLabel, FieldError } from "@/components/ui/field";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 
 import { signIn, type SignInState } from "@/module/ui/actions/auth";
+import Image from "next/image";
 
 const initialState: SignInState = {};
 
@@ -18,8 +19,8 @@ export const SignInView = () => {
   const [state, formAction, isPending] = useActionState(signIn, initialState);
 
   return (
-    <div className="flex flex-col gap-6">
-      <Card className="bg-muted overflow-hidden p-0">
+    <div className="flex flex-col gap-6 max-h-screen">
+      <Card className="bg-muted overflow-hidden p-0 max-h-1/3">
         <CardContent className="grid p-0 md:grid-cols-2">
           <form action={formAction} className="flex flex-col gap-6 p-6 md:p-8">
             <div className="flex flex-col items-center text-center">
@@ -69,12 +70,15 @@ export const SignInView = () => {
             </Button>
           </form>
 
-          <div className="relative hidden bg-muted md:block">
-            <img
+          <div className="hidden md:flex flex-col items-center justify-center w-full h-full bg-muted">
+            <Image
+              width={200}
+              height={200}
               src="/logo.svg"
               alt="logo"
-              className="absolute inset-0 size-full object-contain p-8 dark:brightness-[0.2] dark:grayscale"
+              className="p-6 dark:brightness-[0.2] dark:grayscale"
             />
+            <p className="mt-4 text-5xl font-extrabold">Meet.AI</p>
           </div>
         </CardContent>
       </Card>
