@@ -78,7 +78,7 @@ export const SignUpView = () => {
                 />
               </Field>
 
-              <Button type="submit" className="w-full" disabled={isPending}>
+              <Button type="submit" className="w-full " disabled={isPending}>
                 {isPending ? "Signing up..." : "Sign Up"}
               </Button>
             </form>
