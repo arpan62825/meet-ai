@@ -39,6 +39,7 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-link: var(--link);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -81,6 +82,7 @@
   --sidebar-ring: oklch(0.705 0.015 286.067);
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
+  --link: #5d9e18;
 }
 
 .dark {
@@ -126,5 +128,8 @@
   }
   html {
     @apply font-sans;
+  }
+  a {
+    @apply text-link hover:underline;
   }
 }

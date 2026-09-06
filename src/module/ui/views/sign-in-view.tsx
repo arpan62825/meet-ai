@@ -8,6 +8,7 @@ import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
 
 import Image from "next/image";
+import { Marker, MarkerContent } from "@/components/ui/marker";
 
 export const SignInView = () => {
   const [isPending, setIsPending] = useState(false);
@@ -30,11 +31,23 @@ export const SignInView = () => {
     setIsPending(false);
   };
 
+  const handleSigninWithGitHub = async () => {
+    await authClient.signIn.social({
+      provider: "github",
+    });
+  };
+
+  const handleSigninWithGoogle = async () => {
+    await authClient.signIn.social({
+      provider: "google",
+    });
+  };
+
   return (
     <div className="flex flex-col gap-6 max-h-screen">
       <Card className="bg-muted overflow-hidden p-0 max-h-1/3">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <div className="flex flex-col gap-6 ">
+          <div className="flex flex-col">
             <form
               action={handleSignin}
               className="flex flex-col gap-6 p-6 md:p-8"
@@ -70,6 +83,29 @@ export const SignInView = () => {
                 {isPending ? "Signing in..." : "Sign In"}
               </Button>
             </form>
+            <Marker variant="separator" className=" w-3/4 mx-auto -mt-2 mb-5">
+              <MarkerContent>Or</MarkerContent>
+            </Marker>
+            <div className="flex justify-center items-center gap-12 mb-6">
+              <Button variant={"outline"} onClick={handleSigninWithGitHub}>
+                <Image
+                  width={20}
+                  height={20}
+                  src="/github-icon.png"
+                  alt="github"
+                />
+                GitHub
+              </Button>
+              <Button variant={"outline"} onClick={handleSigninWithGoogle}>
+                <Image
+                  width={20}
+                  height={20}
+                  src="/google-icon.png"
+                  alt="google"
+                />
+                Google
+              </Button>
+            </div>
             <div className="mb-6">
               <p className="text-center text-muted-foreground">
                 Don&apos;t have an account?{" "}
