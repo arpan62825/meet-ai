@@ -18,6 +18,7 @@ export const SignInView = () => {
     const { data, error } = await authClient.signIn.email({
       email: formData.get("email") as string,
       password: formData.get("password") as string,
+      callbackURL: "/",
     });
 
     if (error) {
