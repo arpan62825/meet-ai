@@ -9,6 +9,7 @@ import { Field, FieldLabel } from "@/components/ui/field";
 
 import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
+import { Marker, MarkerContent } from "@/components/ui/marker";
 
 export const SignUpView = () => {
   const [isPending, setIsPending] = useState(false);
@@ -20,6 +21,7 @@ export const SignUpView = () => {
       name: formData.get("name") as string,
       email: formData.get("email") as string,
       password: formData.get("password") as string,
+      callbackURL: "/",
     });
 
     if (error) {
@@ -30,6 +32,18 @@ export const SignUpView = () => {
     console.log(data);
 
     setIsPending(false);
+  };
+
+  const handleSigninWithGitHub = async () => {
+    await authClient.signIn.social({
+      provider: "github",
+    });
+  };
+
+  const handleSigninWithGoogle = async () => {
+    await authClient.signIn.social({
+      provider: "google",
+    });
   };
 
   return (
@@ -82,6 +96,29 @@ export const SignUpView = () => {
                 {isPending ? "Signing up..." : "Sign Up"}
               </Button>
             </form>
+            <Marker variant="separator" className=" w-3/4 mx-auto -mt-2 mb-5">
+              <MarkerContent>Or</MarkerContent>
+            </Marker>
+            <div className="flex justify-center items-center gap-12 mb-6">
+              <Button variant={"outline"} onClick={handleSigninWithGitHub}>
+                <Image
+                  width={20}
+                  height={20}
+                  src="/github-icon.png"
+                  alt="github"
+                />
+                GitHub
+              </Button>
+              <Button variant={"outline"} onClick={handleSigninWithGoogle}>
+                <Image
+                  width={20}
+                  height={20}
+                  src="/google-icon.png"
+                  alt="google"
+                />
+                Google
+              </Button>
+            </div>
             <div className="mb-6">
               <p className="text-center text-muted-foreground">
                 Already have an account?{" "}
