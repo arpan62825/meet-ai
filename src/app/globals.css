@@ -130,6 +130,12 @@
     @apply font-sans;
   }
   a {
-    @apply text-link hover:underline;
+    @apply hover:underline;
+  }
+  a.primary-black {
+    @apply text-foreground;
+  }
+  a.primary-green {
+    @apply text-link;
   }
 }

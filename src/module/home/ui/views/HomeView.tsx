@@ -2,9 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export const HomeView = () => {
-const { data: session } = authClient.useSession();
+  const router = useRouter();
+  const { data: session } = authClient.useSession();
 
   if (!session) {
     return (
@@ -15,7 +17,13 @@ const { data: session } = authClient.useSession();
   }
 
   const handleSignOut = async () => {
-    await authClient.signOut();
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("/auth/sign-in");
+        },
+      },
+    });
   };
   return (
     <div className="flex flex-col justify-center items-center h-screen w-screen">

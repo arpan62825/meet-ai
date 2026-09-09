@@ -8,6 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Field, FieldLabel } from "@/components/ui/field";
 
 import Image from "next/image";
+import { FcGoogle } from "react-icons/fc";
+import { IoLogoGithub } from "react-icons/io";
+
 import { authClient } from "@/lib/auth-client";
 import { Marker, MarkerContent } from "@/components/ui/marker";
 
@@ -101,28 +104,18 @@ export const SignUpView = () => {
             </Marker>
             <div className="flex justify-center items-center gap-12 mb-6">
               <Button variant={"outline"} onClick={handleSigninWithGitHub}>
-                <Image
-                  width={20}
-                  height={20}
-                  src="/github-icon.png"
-                  alt="github"
-                />
+                <IoLogoGithub className="size-5" />
                 GitHub
               </Button>
               <Button variant={"outline"} onClick={handleSigninWithGoogle}>
-                <Image
-                  width={20}
-                  height={20}
-                  src="/google-icon.png"
-                  alt="google"
-                />
+                <FcGoogle className="size-5" />
                 Google
               </Button>
             </div>
             <div className="mb-6">
               <p className="text-center text-muted-foreground">
                 Already have an account?{" "}
-                <a href="/auth/sign-in" className="underline">
+                <a href="/auth/sign-in" className="primary-green underline">
                   Sign In
                 </a>
               </p>
