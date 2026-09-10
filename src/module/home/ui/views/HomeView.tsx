@@ -10,7 +10,7 @@ export const HomeView = () => {
 
   if (!session) {
     return (
-      <div className="flex flex-col justify-center items-center h-screen w-screen">
+      <div className="flex flex-col justify-center items-center h-screen w-dvw">
         <p>Not signed in</p>
       </div>
     );
@@ -26,7 +26,7 @@ export const HomeView = () => {
     });
   };
   return (
-    <div className="flex flex-col justify-center items-center h-screen w-screen">
+    <div className="flex flex-col justify-center items-center h-screen">
       <p>Current user: {session?.user?.name}</p>
       <Button onClick={handleSignOut}>Sign Out</Button>
     </div>

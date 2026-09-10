@@ -13,15 +13,13 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+
 import DashboardUserButton from "./dashboard-user-button";
-import { evalManifestWithRetries } from "next/dist/server/load-components";
 
 const firstSection = [
   {
