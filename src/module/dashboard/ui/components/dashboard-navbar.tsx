@@ -26,13 +26,11 @@ export default function DashboardNavbar({
     setOpen(true);
   };
 
-  //todo: fix the problem with keybinding
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "k" && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         setOpen((prev) => !prev);
-        console.log("hello the key is k");
       }
     };
 

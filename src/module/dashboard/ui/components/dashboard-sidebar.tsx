@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/sidebar";
 
 import DashboardUserButton from "./dashboard-user-button";
+import { authClient } from "@/lib/auth-client";
 
 const firstSection = [
   {
@@ -42,14 +43,14 @@ const secondSection = [
   },
 ];
 
-const user = {
-  name: "John Doe",
-  email: "john@doe.com",
-  avatar:
-    "https://images.unsplash.com/photo-1499714608240-22fc6ad53fb2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=76&q=80",
-};
-
 const DashboardSidebar = () => {
+  const { data: session } = authClient.useSession();
+  const user = {
+    name: session?.user.name as string,
+    email: session?.user.email as string,
+    avatar: session?.user.image as string,
+  };
+
   return (
     <Sidebar>
       <SidebarHeader className="text-sidebar-accent-foreground">
