@@ -7,13 +7,12 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
-  CommandDialog,
+  ResponsiveCommandDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
   CommandList,
-  CommandShortcut,
 } from "@/components/ui/command";
 
 export default function DashboardNavbar({
@@ -58,9 +57,8 @@ export default function DashboardNavbar({
           </span>
           <span className="text-sm">⌘K</span>
         </Button>
-        <CommandDialog open={open} onOpenChange={setOpen}>
+        <ResponsiveCommandDialog open={open} onOpenChange={setOpen}>
           <Command>
-            {/* <CommandShortcut>⌘K</CommandShortcut> */}
             <CommandInput placeholder="Type a command or search..." />
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
@@ -71,7 +69,7 @@ export default function DashboardNavbar({
               </CommandGroup>
             </CommandList>
           </Command>
-        </CommandDialog>
+        </ResponsiveCommandDialog>
       </header>
       {children}
     </SidebarInset>

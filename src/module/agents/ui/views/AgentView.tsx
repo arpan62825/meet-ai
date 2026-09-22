@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import LoadingState from "@/components/LoadingState";
 import ErrorState from "@/components/ErrorState";
+import ResponsiveDialogue from "@/components/ResponsiveDialogue";
 
 const AgentsView = () => {
   const trpc = useTRPC();
@@ -21,7 +22,19 @@ const AgentsView = () => {
       />
     );
 
-  return <div>{JSON.stringify(data, null, 2)}</div>;
+  return (
+    <div>
+      <ResponsiveDialogue
+        title="This title"
+        description="this description"
+        open
+        onOpenChange={() => {}}
+      >
+        <div>This should be the children</div>
+      </ResponsiveDialogue>
+      <div>{JSON.stringify(data, null, 2)}</div>
+    </div>
+  );
 };
 
 export default AgentsView;

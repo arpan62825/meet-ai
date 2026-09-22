@@ -139,3 +139,10 @@
     @apply text-link;
   }
 }
+
+@layer base {
+  button:not(:disabled),
+  [rol="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
