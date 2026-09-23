@@ -38,11 +38,11 @@ const ResponsiveDialogue = ({
   // onOpenChange,
 }: ResponsiveDialogueProps) => {
   const isMobile = useIsMobile();
-  const [open, setOpen] = useState(false);
+  const [open, onOpenChange] = useState(false);
 
   if (isMobile) {
     return (
-      <Drawer open={open} onOpenChange={setOpen}>
+      <Drawer open={open} onOpenChange={onOpenChange}>
         <DrawerTrigger render={<Button variant="outline" />}>
           Open
         </DrawerTrigger>
@@ -52,12 +52,6 @@ const ResponsiveDialogue = ({
             <DrawerDescription>{description}</DrawerDescription>
           </DrawerHeader>
           <div className="p-4">{children}</div>
-          <DrawerFooter>
-            <Button>Submit</Button>
-            <DrawerClose render={<Button variant="outline" />}>
-              Cancel
-            </DrawerClose>
-          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     );
@@ -65,7 +59,7 @@ const ResponsiveDialogue = ({
 
   return (
     <div>
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogTrigger>Open</DialogTrigger>
         <DialogContent>
           <DialogHeader>
@@ -79,5 +73,3 @@ const ResponsiveDialogue = ({
 };
 
 export default ResponsiveDialogue;
-
-
