@@ -1,11 +1,10 @@
 "use client";
-
+import DiceBearAvatar from "@/components/DiceBearAvatar";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import { formatDistanceToNow } from "date-fns";
 import LoadingState from "@/components/LoadingState";
 import ErrorState from "@/components/ErrorState";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import { TrashIcon } from "lucide-react";
@@ -70,11 +69,12 @@ const AgentsView = () => {
           >
             {/* Agent — avatar (mobile: row start) */}
             <div className="shrink-0 md:flex md:items-center md:gap-3">
-              <Avatar>
-                <AvatarFallback className="text-xs font-semibold uppercase">
-                  {agent.name.slice(0, 2)}
-                </AvatarFallback>
-              </Avatar>
+              <DiceBearAvatar
+                seed={agent.name}
+                size={32}
+                className="size-8 rounded-full"
+              />
+
               {/* Name shown beside avatar on desktop only */}
               <span className="hidden text-sm font-semibold md:inline">
                 {agent.name}
