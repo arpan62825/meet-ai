@@ -2,29 +2,57 @@
 
 import Form from "next/form";
 import { Button } from "@/components/ui/button";
-import ResponsiveDialogue from "@/components/ResponsiveDialogue";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
+import { ResponsiveCommandDialog } from "@/components/ui/command";
 
 const AgentHeader = () => {
   const handleSubmit = () => {};
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   return (
-    <div className="flex justify-between pt-4 px-8 ">
-      <h1>My Agents</h1>
-      <ResponsiveDialogue
+    <div className="flex flex-col gap-y-5 px-4 pt-4 md:px-8">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold tracking-tight">My Agents</h1>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => setOpen((prev) => !prev)}
+        >
+          Create
+        </Button>
+      </div>
+      <ResponsiveCommandDialog
         title="Create Agent"
-        description="Create a new agent"
+        description="Fill in the details to create a new agent."
         open={open}
         onOpenChange={setOpen}
       >
-        <Form action={handleSubmit} className="flex flex-col gap-3">
-          <label htmlFor="name" className="font-semibold">Name</label>
-          <input type="text" name="name" id="name" className="border-b" />
-          <label htmlFor="instructions" className="font-semibold">Instructions</label>
-          <input type="text" name="instructions" id="instructions" className="border-b" />
-          <Button type="submit">Create</Button>
+        <Form action={handleSubmit} className="flex flex-col gap-6 p-6">
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="name">Name</Label>
+            <Input
+              type="text"
+              name="name"
+              id="name"
+              placeholder="e.g. My Assistant"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="instructions">Instructions</Label>
+            <Textarea
+              name="instructions"
+              id="instructions"
+              placeholder="e.g. You are a helpful assistant that..."
+              rows={4}
+            />
+          </div>
+          <Button type="submit" className="w-full">
+            Create Agent
+          </Button>
         </Form>
-      </ResponsiveDialogue>
+      </ResponsiveCommandDialog>
     </div>
   );
 };
