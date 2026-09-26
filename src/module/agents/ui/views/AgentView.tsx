@@ -66,36 +66,46 @@ const AgentsView = () => {
         {agentsList.map((agent) => (
           <div
             key={agent.id}
-            className="group flex flex-col gap-3 border-b py-4 last:border-b-0 md:grid md:grid-cols-[1fr_2fr_auto_auto] md:items-center md:gap-4"
+            className="group flex items-start gap-3 border-b py-4 last:border-b-0 md:grid md:grid-cols-[1fr_2fr_auto_auto] md:items-center md:gap-4"
           >
-            {/* Agent — avatar + name */}
-            <div className="flex items-center gap-3">
+            {/* Agent — avatar (mobile: row start) */}
+            <div className="shrink-0 md:flex md:items-center md:gap-3">
               <Avatar>
                 <AvatarFallback className="text-xs font-semibold uppercase">
                   {agent.name.slice(0, 2)}
                 </AvatarFallback>
               </Avatar>
-              <span className="text-sm font-semibold">{agent.name}</span>
+              {/* Name shown beside avatar on desktop only */}
+              <span className="hidden text-sm font-semibold md:inline">
+                {agent.name}
+              </span>
             </div>
 
-            {/* Instructions — truncated */}
-            <p className="line-clamp-1 text-xs leading-relaxed text-muted-foreground md:text-sm">
-              {agent.instructions}
-            </p>
+            {/* Instructions — row middle */}
+            <div className="flex min-w-0 flex-1 flex-col gap-1 md:contents">
+              <span className="text-sm font-semibold md:hidden">
+                {agent.name}
+              </span>
 
-            {/* Created date */}
-            <span className="text-xs text-muted-foreground">
-              {formatDistanceToNow(new Date(agent.createdAt), {
-                addSuffix: true,
-              })}
-            </span>
+              {/* Instructions — truncated */}
+              <p className="line-clamp-1 text-xs leading-relaxed text-muted-foreground md:text-sm">
+                {agent.instructions}
+              </p>
 
-            {/* Delete */}
+              {/* Created date */}
+              <span className="text-xs text-muted-foreground">
+                {formatDistanceToNow(new Date(agent.createdAt), {
+                  addSuffix: true,
+                })}
+              </span>
+            </div>
+
+            {/* Delete — pushed to the right on mobile */}
             <Button
               type="button"
               variant="ghost"
-              size="sm"
-              className="w-fit text-destructive hover:text-destructive/80 md:w-10"
+              size="icon"
+              className="shrink-0 self-center text-destructive hover:text-destructive/80"
               onClick={() => deleteMutation.mutate({ id: agent.id })}
               disabled={deleteMutation.isPending}
             >

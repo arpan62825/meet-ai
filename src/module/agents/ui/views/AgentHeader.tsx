@@ -7,9 +7,36 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { ResponsiveCommandDialog } from "@/components/ui/command";
+import { useTRPC } from "@/trpc/client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { authClient } from "@/lib/auth-client";
 
 const AgentHeader = () => {
-  const handleSubmit = () => {};
+
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const { data: session } = authClient.useSession();
+
+  const createMutation = useMutation({
+    ...trpc.agents.create.mutationOptions(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: trpc.agents.getByUserId.queryKey({
+          id: session?.user.id as string,
+        }),
+      });
+    },
+  });
+
+  const handleSubmit = async (formData: FormData) => {
+
+    createMutation.mutate({
+      name: formData.get("name") as string,
+      instructions: formData.get("instructions") as string,
+    });
+    console.log(formData.get("name"));
+    console.log(formData.get("instructions"));
+  };
   const [open, setOpen] = useState(false);
   return (
     <div className="flex flex-col gap-y-5 px-4 pt-4 md:px-8">
