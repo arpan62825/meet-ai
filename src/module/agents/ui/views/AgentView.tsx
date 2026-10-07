@@ -1,4 +1,6 @@
 "use client";
+
+import { useMemo } from "react";
 import DiceBearAvatar from "@/components/DiceBearAvatar";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
@@ -8,11 +10,16 @@ import ErrorState from "@/components/ErrorState";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import { TrashIcon } from "lucide-react";
+import { useQueryState } from "nuqs";
 
 const AgentsView = () => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const { data: session } = authClient.useSession();
+
+  const [searchAgent] = useQueryState("search_agent", {
+    defaultValue: "",
+  });
 
   const { data, isLoading, isError, refetch } = useQuery(
     trpc.agents.getByUserId.queryOptions({ id: session?.user.id as string }),
@@ -29,6 +36,18 @@ const AgentsView = () => {
     },
   });
 
+  const filteredAgents = useMemo(() => {
+    const agentsList = Array.isArray(data) ? data : data ? [data] : [];
+    if (!searchAgent.trim()) return agentsList;
+
+    const lowercasedQuery = searchAgent.toLowerCase();
+    return agentsList.filter(
+      (agent) =>
+        agent.name.toLowerCase().includes(lowercasedQuery) ||
+        agent.instructions?.toLowerCase().includes(lowercasedQuery),
+    );
+  }, [data, searchAgent]);
+
   if (isLoading) return <LoadingState title="Loading agents..." />;
   if (isError)
     return (
@@ -39,13 +58,13 @@ const AgentsView = () => {
       />
     );
 
-  const agentsList = Array.isArray(data) ? data : data ? [data] : [];
-
-  if (agentsList.length === 0)
+  if (filteredAgents.length === 0)
     return (
       <div className="flex flex-col items-center justify-center py-24 gap-2">
         <p className="text-sm text-muted-foreground">
-          No agents yet. Create one to get started!
+          {searchAgent.trim()
+            ? "No agents match your search."
+            : "No agents yet. Create one to get started!"}
         </p>
       </div>
     );
@@ -62,7 +81,7 @@ const AgentsView = () => {
 
       {/* Rows */}
       <div className="flex flex-col">
-        {agentsList.map((agent) => (
+        {filteredAgents.map((agent) => (
           <div
             key={agent.id}
             className="group flex items-start gap-3 border-b py-4 last:border-b-0 md:grid md:grid-cols-[1fr_2fr_auto_auto] md:items-center md:gap-4"
