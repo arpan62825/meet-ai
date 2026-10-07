@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Inter, Figtree } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { TRPCReactProvider } from "@/components/providers/trpc-provider";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const geistHeading = Geist({ subsets: ["latin"], variable: "--font-heading" });
 
@@ -38,7 +39,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       )}
     >
       <body className="min-h-full flex flex-col">
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <TRPCReactProvider>
+          <NuqsAdapter>{children}</NuqsAdapter>
+        </TRPCReactProvider>
       </body>
     </html>
   );
