@@ -1,25 +1,17 @@
 "use client";
 
-import { useMemo } from "react";
-import DiceBearAvatar from "@/components/DiceBearAvatar";
+import { agentColumns, type AgentTableMeta } from "../components/columns";
+import { DataTable } from "../components/data-table";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
-import { formatDistanceToNow } from "date-fns";
 import LoadingState from "@/components/LoadingState";
 import ErrorState from "@/components/ErrorState";
-import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
-import { TrashIcon } from "lucide-react";
-import { useQueryState } from "nuqs";
 
 const AgentsView = () => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const { data: session } = authClient.useSession();
-
-  const [searchAgent] = useQueryState("search_agent", {
-    defaultValue: "",
-  });
 
   const { data, isLoading, isError, refetch } = useQuery(
     trpc.agents.getByUserId.queryOptions({ id: session?.user.id as string }),
@@ -36,18 +28,6 @@ const AgentsView = () => {
     },
   });
 
-  const filteredAgents = useMemo(() => {
-    const agentsList = Array.isArray(data) ? data : data ? [data] : [];
-    if (!searchAgent.trim()) return agentsList;
-
-    const lowercasedQuery = searchAgent.toLowerCase();
-    return agentsList.filter(
-      (agent) =>
-        agent.name.toLowerCase().includes(lowercasedQuery) ||
-        agent.instructions?.toLowerCase().includes(lowercasedQuery),
-    );
-  }, [data, searchAgent]);
-
   if (isLoading) return <LoadingState title="Loading agents..." />;
   if (isError)
     return (
@@ -58,81 +38,20 @@ const AgentsView = () => {
       />
     );
 
-  if (filteredAgents.length === 0)
-    return (
-      <div className="flex flex-col items-center justify-center py-24 gap-2">
-        <p className="text-sm text-muted-foreground">
-          {searchAgent.trim()
-            ? "No agents match your search."
-            : "No agents yet. Create one to get started!"}
-        </p>
-      </div>
-    );
+  const meta: AgentTableMeta = {
+    deleteAgent: (id: string) => deleteMutation.mutate({ id }),
+    isDeleting: deleteMutation.isPending,
+  };
 
   return (
-    <div className="flex flex-col px-4 md:px-8">
-      {/* Table header — hidden on mobile */}
-      <div className="hidden border-b py-3 text-xs font-medium uppercase tracking-wider text-muted-foreground md:grid md:grid-cols-[1fr_2fr_auto_auto]  md:items-center md:gap-4">
-        <span>Agent</span>
-        <span>Instructions</span>
-        <span>Created</span>
-        <span className="w-10" />
-      </div>
-
-      {/* Rows */}
-      <div className="flex flex-col">
-        {filteredAgents.map((agent) => (
-          <div
-            key={agent.id}
-            className="group flex items-start gap-3 border-b py-4 last:border-b-0 md:grid md:grid-cols-[1fr_2fr_auto_auto] md:items-center md:gap-4"
-          >
-            {/* Agent — avatar (mobile: row start) */}
-            <div className="shrink-0 md:flex md:items-center md:gap-3">
-              <DiceBearAvatar
-                seed={agent.name}
-                size={32}
-                className="size-8 rounded-full"
-              />
-
-              {/* Name shown beside avatar on desktop only */}
-              <span className="hidden text-sm font-semibold md:inline">
-                {agent.name}
-              </span>
-            </div>
-
-            {/* Instructions — row middle */}
-            <div className="flex min-w-0 flex-1 flex-col gap-1 md:contents">
-              <span className="text-sm font-semibold md:hidden">
-                {agent.name}
-              </span>
-
-              {/* Instructions — truncated */}
-              <p className="line-clamp-1 text-xs leading-relaxed text-muted-foreground md:text-sm">
-                {agent.instructions}
-              </p>
-
-              {/* Created date */}
-              <span className="text-xs text-muted-foreground">
-                {formatDistanceToNow(new Date(agent.createdAt), {
-                  addSuffix: true,
-                })}
-              </span>
-            </div>
-
-            {/* Delete — pushed to the right on mobile */}
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="shrink-0 self-center text-destructive hover:text-destructive/80"
-              onClick={() => deleteMutation.mutate({ id: agent.id })}
-              disabled={deleteMutation.isPending}
-            >
-              <TrashIcon className="size-4" />
-            </Button>
-          </div>
-        ))}
-      </div>
+    <div className="px-4 md:px-8">
+      <DataTable
+        columns={agentColumns}
+        data={data ?? []}
+        meta={meta}
+        searchColumnId="name"
+        searchPlaceholder="Search agents..."
+      />
     </div>
   );
 };
