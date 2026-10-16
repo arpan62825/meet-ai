@@ -44,7 +44,7 @@ const AgentsView = () => {
   };
 
   return (
-    <div className="px-4 md:px-8">
+    <div className="flex flex-1 flex-col min-h-0 px-4 md:px-8 pb-4">
       <DataTable
         columns={agentColumns}
         data={data ?? []}

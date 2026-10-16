@@ -19,10 +19,6 @@ const AgentHeader = () => {
   const queryClient = useQueryClient();
   const { data: session } = authClient.useSession();
 
-  const [searchAgent, setSearchAgent] = useQueryState("search_agent", {
-    defaultValue: "",
-  });
-
   const createMutation = useMutation({
     ...trpc.agents.create.mutationOptions(),
     onSuccess: () => {
@@ -45,26 +41,17 @@ const AgentHeader = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="flex flex-col gap-y-5 px-4 pt-4 md:px-8">
-      <div className="mb-8">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold tracking-tight">My Agents</h1>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => setOpen((prev) => !prev)}
-          >
-            <FaPlus />
-            Add Agent
-          </Button>
-        </div>
-        <Input
-          type="text"
-          aria-label="Agent name"
-          placeholder="Search for agents..."
-          name={searchAgent}
-          onChange={(e) => setSearchAgent(e.target.value)}
-        />
+    <div className="shrink-0 flex flex-col px-4 pt-4 pb-2 md:px-8">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold tracking-tight">My Agents</h1>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => setOpen((prev) => !prev)}
+        >
+          <FaPlus />
+          Add Agent
+        </Button>
       </div>
       <ResponsiveCommandDialog
         title="Create Agent"

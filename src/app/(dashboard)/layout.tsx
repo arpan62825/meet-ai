@@ -5,7 +5,7 @@ import AgentHeader from "@/module/agents/ui/views/AgentHeader";
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <SidebarProvider>
+    <SidebarProvider className="h-svh max-h-svh overflow-hidden">
       <DashboardSidebar />
       <DashboardNavbar>
         <AgentHeader />

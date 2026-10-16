@@ -41,7 +41,7 @@ export default function DashboardNavbar({
   }, []);
 
   return (
-    <SidebarInset>
+    <SidebarInset className="h-svh max-h-svh overflow-hidden flex flex-col">
       <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
         <SidebarTrigger className="-ml-1 text-2xl" />
         <Button
@@ -71,7 +71,9 @@ export default function DashboardNavbar({
           </Command>
         </ResponsiveCommandDialog>
       </header>
-      {children}
+      <div className="flex flex-1 flex-col min-h-0 overflow-hidden">
+        {children}
+      </div>
     </SidebarInset>
   );
 }

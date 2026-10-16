@@ -42,25 +42,27 @@ export function DataTable<TData extends RowData>({
     : undefined;
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-1 flex-col min-h-0 gap-4">
       {/* Search input — only rendered if a searchColumnId is provided */}
       {searchColumn && (
-        <Input
-          placeholder={searchPlaceholder}
-          value={(searchColumn.getFilterValue() as string) ?? ""}
-          onChange={(e) => searchColumn.setFilterValue(e.target.value)}
-          className="max-w-sm"
-        />
+        <div className="shrink-0">
+          <Input
+            placeholder={searchPlaceholder}
+            value={(searchColumn.getFilterValue() as string) ?? ""}
+            onChange={(e) => searchColumn.setFilterValue(e.target.value)}
+            className="max-w-sm"
+          />
+        </div>
       )}
 
-      {/* Table */}
-      <div className="overflow-hidden rounded-md border">
-        <Table>
-          <TableHeader>
+      {/* Table — scrollable container */}
+      <div className="flex-1 min-h-0 rounded-md border overflow-hidden flex flex-col bg-card">
+        <Table containerClassName="flex-1 min-h-0 overflow-auto">
+          <TableHeader className="sticky top-0 z-10 bg-background shadow-xs">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
+                  <TableHead key={header.id} className="bg-background">
                     {header.isPlaceholder ? null : (
                       <table.FlexRender header={header} />
                     )}
@@ -98,7 +100,7 @@ export function DataTable<TData extends RowData>({
       </div>
 
       {/* Pagination */}
-      <div className="flex items-center justify-between">
+      <div className="flex shrink-0 items-center justify-between">
         <p className="text-sm text-muted-foreground">
           {table.getPrePaginatedRowModel().rows.length} result(s)
         </p>
