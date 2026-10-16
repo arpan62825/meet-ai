@@ -1,3 +1,5 @@
+"use client";
+
 import { getQueryClient, trpc } from "@/trpc/server";
 import { Suspense } from "react";
 import { ErrorBoundary } from "next/dist/client/components/error-boundary";
@@ -8,11 +10,9 @@ interface Props {
   }>;
 }
 
-const AgentIdView = async ({ params }: Props) => {
-  const { agentId } = await params;
+const AgentIdView = ({ params }: Props) => {
+  const { agentId } = params;
   const queryClient = getQueryClient();
-
-  
 
   return <div>AgentIdView</div>;
 };

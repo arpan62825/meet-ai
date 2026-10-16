@@ -13,12 +13,16 @@ const Page = async ({ params }: Props) => {
   const queryClient = getQueryClient();
 
   return (
-    <ErrorBoundary fallback={<div>Something went wrong</div>}>
-      <Suspense fallback={<div>Loading...</div>}>
-        {/* <trpc.Provider queryClient={queryClient}>
-          <AgentIdView agentId={agentId} />
-        </trpc.Provider> */}
-      </Suspense>
-    </ErrorBoundary>
+    // <ErrorBoundary fallback={<div>Something went wrong</div>}>
+    //   <Suspense fallback={<div>Loading...</div>}>
+    //     <trpc.Provider queryClient={queryClient}>
+    //       <AgentIdView agentId={agentId} />
+    //     </trpc.Provider>
+    //   </Suspense>
+    // </ErrorBoundary>
+
+    <>{agentId}</>
   );
 };
+
+export default Page;

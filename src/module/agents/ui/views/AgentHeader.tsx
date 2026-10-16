@@ -43,7 +43,7 @@ const AgentHeader = () => {
   return (
     <div className="shrink-0 flex flex-col px-4 pt-4 pb-2 md:px-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold tracking-tight">My Agents</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Meet.AI Agents</h1>
         <Button
           type="button"
           variant="outline"

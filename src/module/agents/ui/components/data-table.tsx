@@ -14,6 +14,7 @@ import {
 import { features, type DataTableFeatures } from "./data-table-features";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface DataTableProps<TData extends RowData> {
   columns: ColumnDef<DataTableFeatures, TData>[];
@@ -23,7 +24,7 @@ interface DataTableProps<TData extends RowData> {
   searchPlaceholder?: string;
 }
 
-export function DataTable<TData extends RowData>({
+export function DataTable<TData extends { id: string }>({
   columns,
   data,
   meta,
@@ -80,7 +81,9 @@ export function DataTable<TData extends RowData>({
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      <table.FlexRender cell={cell} />
+                      <Link key={cell.id} href={`/agents/${row.original.id}`}>
+                        <table.FlexRender cell={cell} />
+                      </Link>
                     </TableCell>
                   ))}
                 </TableRow>
