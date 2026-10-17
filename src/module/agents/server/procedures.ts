@@ -13,6 +13,17 @@ export const agentsRouter = createTRPCRouter({
     return data;
   }),
 
+  getById: protectedProcedure
+    .input(z.object({ id: z.string().min(1, { message: "Id is required" }) }))
+    .query(async ({ ctx, input }) => {
+      const [data] = await ctx.db
+        .select()
+        .from(agents)
+        .where(eq(agents.id, input.id));
+
+      return data;
+    }),
+
   create: protectedProcedure
     .input(
       z.object({

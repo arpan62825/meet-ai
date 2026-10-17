@@ -1,11 +1,10 @@
 import { getQueryClient, trpc } from "@/trpc/server";
 import { Suspense } from "react";
 import { ErrorBoundary } from "next/dist/client/components/error-boundary";
+import AgentIdView from "@/module/agents/ui/views/AgentIdView";
 
 interface Props {
-  params: Promise<{
-    agentId: string;
-  }>;
+  params: Promise<{ agentId: string }>;
 }
 
 const Page = async ({ params }: Props) => {
@@ -21,7 +20,7 @@ const Page = async ({ params }: Props) => {
     //   </Suspense>
     // </ErrorBoundary>
 
-    <>{agentId}</>
+    <AgentIdView agentId={agentId} />
   );
 };
 

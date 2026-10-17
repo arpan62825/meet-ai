@@ -1,20 +1,31 @@
 "use client";
 
-import { getQueryClient, trpc } from "@/trpc/server";
-import { Suspense } from "react";
-import { ErrorBoundary } from "next/dist/client/components/error-boundary";
+import DiceBearAvatar from "@/components/DiceBearAvatar";
+import { useTRPC } from "@/trpc/client";
+import { useQuery } from "@tanstack/react-query";
+import AgentCard from "../components/AgentCard";
+import LoadingState from "@/components/LoadingState";
 
 interface Props {
-  params: Promise<{
-    agentId: string;
-  }>;
+  agentId: string;
 }
 
-const AgentIdView = ({ params }: Props) => {
-  const { agentId } = params;
-  const queryClient = getQueryClient();
+const AgentIdView = ({ agentId }: Props) => {
+  const trpc = useTRPC();
 
-  return <div>AgentIdView</div>;
+  const { data, isLoading, isError, refetch } = useQuery(
+    trpc.agents.getById.queryOptions({ id: agentId }),
+  );
+
+  if (isLoading || !data) {
+    return <LoadingState />;
+  }
+
+  return (
+    <div className="flex justify-center mt-16  h-7/12">
+      <AgentCard agent={data} />
+    </div>
+  );
 };
 
 export default AgentIdView;
