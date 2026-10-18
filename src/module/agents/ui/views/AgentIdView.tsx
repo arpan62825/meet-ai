@@ -1,6 +1,5 @@
 "use client";
 
-import DiceBearAvatar from "@/components/DiceBearAvatar";
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
 import AgentCard from "../components/AgentCard";
@@ -22,7 +21,7 @@ const AgentIdView = ({ agentId }: Props) => {
   }
 
   return (
-    <div className="flex justify-center mt-16  h-7/12">
+    <div className="flex justify-center p-4 md:p-8 w-full">
       <AgentCard agent={data} />
     </div>
   );
