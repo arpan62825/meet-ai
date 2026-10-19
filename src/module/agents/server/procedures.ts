@@ -1,7 +1,7 @@
 import { agents } from "@/db/schema";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { z } from "zod";
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 export const agentsRouter = createTRPCRouter({
   getMany: protectedProcedure.query(async ({ ctx }) => {
