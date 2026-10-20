@@ -24,27 +24,25 @@ export const meetingsRouter = createTRPCRouter({
       return data;
     }),
 
-  // create: protectedProcedure
-  //   .input(
-  //     z.object({
-  //       name: z.string().min(1, { message: "Name is required" }),
-  //       instructions: z
-  //         .string()
-  //         .min(1, { message: "Instructions is required" }),
-  //     }),
-  //   )
-  //   .mutation(async ({ ctx, input }) => {
-  //     const [createdAgent] = await ctx.db
-  //       .insert(agents)
-  //       .values({
-  //         name: input.name,
-  //         instructions: input.instructions,
-  //         userId: ctx.session.user.id,
-  //       })
-  //       .returning();
+  create: protectedProcedure
+    .input(
+      z.object({
+        name: z.string().min(1, { message: "Name is required" }),
+        agentId: z.string().min(1, { message: "AgentId is required" }),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const [createdMeetings] = await ctx.db
+        .insert(meetings)
+        .values({
+          name: input.name,
+          userId: ctx.session.user.id,
+          agentId: input.agentId,
+        })
+        .returning();
 
-  //     return createdAgent;
-  //   }),
+      return createdMeetings;
+    }),
 
   delete: protectedProcedure
     .input(

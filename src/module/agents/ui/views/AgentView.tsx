@@ -7,6 +7,7 @@ import { useTRPC } from "@/trpc/client";
 import LoadingState from "@/components/LoadingState";
 import ErrorState from "@/components/ErrorState";
 import { authClient } from "@/lib/auth-client";
+import AgentHeader from "../components/AgentHeader";
 
 const AgentsView = () => {
   const trpc = useTRPC();
@@ -45,6 +46,7 @@ const AgentsView = () => {
 
   return (
     <div className="flex flex-1 flex-col min-h-0 px-4 md:px-8 pb-4">
+      <AgentHeader />
       <DataTable
         columns={agentColumns}
         data={data ?? []}
