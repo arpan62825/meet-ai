@@ -19,23 +19,25 @@ const MeetingHeader = () => {
   const { data: session } = authClient.useSession();
 
   const createMutation = useMutation({
-    ...trpc.agents.create.mutationOptions(),
+    ...trpc.meetings.create.mutationOptions(),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: trpc.agents.getByUserId.queryKey({
+        queryKey: trpc.meetings.getByUserId.queryKey({
           id: session?.user.id as string,
         }),
       });
     },
   });
 
+  const [agentId, setAgentId] = useState<string | null>(null);
+
   const handleSubmit = async (formData: FormData) => {
+    if (!agentId) return;
+
     createMutation.mutate({
       name: formData.get("name") as string,
-      instructions: formData.get("instructions") as string,
+      agentId: agentId,
     });
-    console.log(formData.get("name"));
-    console.log(formData.get("instructions"));
   };
   const [open, setOpen] = useState(false);
 
@@ -70,7 +72,7 @@ const MeetingHeader = () => {
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="agent">Select Agent</Label>
-            <AgentListCombobox />
+            <AgentListCombobox value={agentId} onChange={setAgentId} />
           </div>
           <Button type="submit" className="w-full">
             Create Meeting
